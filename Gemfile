@@ -16,6 +16,7 @@ group :assets do
 end
 
 gem 'jquery-rails'
+gem 'aws-sdk'
 
 # Use unicorn as the web server
 # gem 'unicorn'
