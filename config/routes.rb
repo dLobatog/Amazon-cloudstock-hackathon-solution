@@ -1,6 +1,5 @@
 AmazonCloudstock::Application.routes.draw do
-  resources :users
-
+  resources :users, :id => /[a-z0-9-]*/ 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
