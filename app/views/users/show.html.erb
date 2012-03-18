@@ -21,5 +21,11 @@
 </p>
 
 
+<% if @user.has_image %>
+<p>
+  <b>Image:</b>
+  <%= image_tag(@user.img) %>
+</p>
+<% end %>                                     
 <%= link_to 'Edit', edit_user_path(@user) %> |
 <%= link_to 'Back', users_path %>

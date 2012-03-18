@@ -6,6 +6,8 @@
     <th>Age</th>
     <th>Sex</th>
     <th>City</th>
+    <th>Image</th>
+    <th></th>
     <th></th>
     <th></th>
     <th></th>
@@ -17,6 +19,9 @@
     <td><%= user.age %></td>
     <td><%= user.sex %></td>
     <td><%= user.city %></td>
+    <% if user.has_image %>
+      <td><%= image_tag(user.img, :size => "10x10") %></td>
+    <% end %>
     <td><%= link_to 'Show', user %></td>
     <td><%= link_to 'Edit', edit_user_path(user) %></td>
     <td><%= link_to 'Destroy', user, confirm: 'Are you sure?', method: :delete %></td>

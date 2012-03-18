@@ -26,7 +26,13 @@
   <div class="field">
     <%= f.label :city %><br />
     <%= f.text_field :city %>
-  </div>
+  </div> 
+  <% if @user.id %>
+  <div class="field">
+    <%= f.label :img %><br />
+    <%= f.file_field :img %>
+  </div> 
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>
