@@ -1,0 +1,71 @@
+= Cloudstock Amazon DynamoDB & S3 Hackathon.
+
+This application shows how to create a Ruby on Rails application 
+that allows users to add information to a DynamoDB database, and to 
+push and retrieve information from an S3 database. I included my own
+database names but you should change these for yours. You should change
+the initializer for your own secret and access keys.
+
+= Set Up
+
+To set this up, as we won't use ActiveRecord, call:
+
+rails new your_app_name --skip-active-record
+
+In order to get the AWS Ruby functionality, add the 'aws-sdk' gem
+to your Gemfile and execute 'bundle install' to get everything set up.
+
+= Initializer 
+
+See config/initializers/aws.rb . This gets called when Rails is initiated
+and it will log you in, provided you give your Amazon access_key_id and
+secret_access_key.
+
+= Model 
+
+Instead of getting functionality from ActiveRecord, we must inherit from
+AWS::Record, then:
+
+User < AWS::Record::HashModel 
+
+The attributes should be defined here, as:
+
+string_attr :id //This is my primary key in DynamoDB, you may have another one
+integer_attr :whatever_number
+boolean_attr :whatever_boolean, :default => false
+
+In order to write information to S3, we use the following command:
+
+AWS::S3.new.buckets[:your_bucket_name].objects[id].write(your_object_in_s3.read)
+
+And to retrieve it we can use:
+
+AWS::S3.new.buckets[:your_bucket_name].objects[id].url_for(:read)
+
+Be wary that you should implement some sort of mechanism to avoid making 
+too many calls in order to avoid getting to your S3 quota quickly. 
+In this example there is a boolean attribute that takes care not to 
+call to the database if there is no image.
+
+= View 
+
+I included a file_field caption in the form so that the users
+can upload their photos to Amazon S3. This is only done whenever there
+is already an id in DynamoDB set for the record (if @user.id).
+
+In order to show this photos I call the user model in index with (user.img)
+so that the image is retrieved from S3. Try to call this method only 
+if you are sure that the record contains an image so you can avoid 
+unnecessary calls to the database.
+
+= Routes 
+
+Default controller redirects to @user using the default Rails ids, 
+which by convention are just integers. DynamoDB uses ids with hyphens, lowercase
+and uppercase alphanumeric characters, so you have to figure out a way
+to handle this in routes.rb. A regular expression works well:
+
+resources :your_model, :id => /[a-z0-9-]*/ 
+
+
+
