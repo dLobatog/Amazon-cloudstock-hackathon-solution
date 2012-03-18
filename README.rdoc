@@ -10,7 +10,7 @@ the initializer for your own secret and access keys.
 
 To set this up, as we won't use ActiveRecord, call:
 
-rails new your_app_name --skip-active-record
+    rails new your_app_name --skip-active-record
 
 In order to get the AWS Ruby functionality, add the 'aws-sdk' gem
 to your Gemfile and execute 'bundle install' to get everything set up.
@@ -26,21 +26,21 @@ secret_access_key.
 Instead of getting functionality from ActiveRecord, we must inherit from
 AWS::Record, then:
 
-User < AWS::Record::HashModel 
+    User < AWS::Record::HashModel 
 
 The attributes should be defined here, as:
 
-string_attr :id //This is my primary key in DynamoDB, you may have another one
-integer_attr :whatever_number
-boolean_attr :whatever_boolean, :default => false
+    string_attr :id //This is my primary key in DynamoDB, you may have another one
+    integer_attr :whatever_number
+    boolean_attr :whatever_boolean, :default => false
 
 In order to write information to S3, we use the following command:
 
-AWS::S3.new.buckets[:your_bucket_name].objects[id].write(your_object_in_s3.read)
+    AWS::S3.new.buckets[:your_bucket_name].objects[id].write(your_object_in_s3.read)
 
 And to retrieve it we can use:
 
-AWS::S3.new.buckets[:your_bucket_name].objects[id].url_for(:read)
+    AWS::S3.new.buckets[:your_bucket_name].objects[id].url_for(:read)
 
 Be wary that you should implement some sort of mechanism to avoid making 
 too many calls in order to avoid getting to your S3 quota quickly. 
@@ -65,7 +65,7 @@ which by convention are just integers. DynamoDB uses ids with hyphens, lowercase
 and uppercase alphanumeric characters, so you have to figure out a way
 to handle this in routes.rb. A regular expression works well:
 
-resources :your_model, :id => /[a-z0-9-]*/ 
+    resources :your_model, :id => /[a-z0-9-]*/ 
 
 
 
